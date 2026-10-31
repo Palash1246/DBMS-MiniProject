@@ -34,11 +34,11 @@ CREATE OR REPLACE VIEW demo.v_lot_import_summary AS
 -- 9. ALTER TABLE: DROP CONSTRAINT
 ALTER TABLE demo.lot_import DROP CONSTRAINT chk_demo_capacity;
 
--- 10. ALTER TABLE: DROP COLUMN
-ALTER TABLE demo.lot_import DROP COLUMN external_reference;
+-- 10. DROP INDEX (dropped explicitly before dropping column)
+DROP INDEX IF EXISTS demo.idx_demo_ext_ref;
 
--- 11. DROP INDEX
-DROP INDEX demo.idx_demo_ext_ref;
+-- 11. ALTER TABLE: DROP COLUMN
+ALTER TABLE demo.lot_import DROP COLUMN external_reference;
 
 -- 12. DROP VIEW
 DROP VIEW IF EXISTS demo.v_lot_import_summary;
@@ -48,4 +48,3 @@ DROP TABLE IF EXISTS demo.lot_import;
 
 -- 14. DROP SCHEMA
 DROP SCHEMA IF EXISTS demo CASCADE;
-
