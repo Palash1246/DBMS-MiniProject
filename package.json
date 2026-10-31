@@ -1,0 +1,54 @@
+{
+  "name": "parksmart",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "db:up": "docker-compose up -d",
+    "db:down": "docker-compose down",
+    "db:migrate": "tsx db/migrate.ts",
+    "db:mongo": "tsx db/mongo/setup.ts",
+    "db:seed": "tsx db/seed.ts",
+    "db:seed:bulk": "tsx db/seed-bulk.ts",
+    "db:reset": "tsx db/migrate.ts --reset && tsx db/mongo/setup.ts && tsx db/seed.ts",
+    "cron:expire": "tsx scripts/expire-holds-loop.ts",
+    "demo:race": "tsx scripts/race-demo.ts",
+    "reconcile": "tsx scripts/reconcile.ts",
+    "test": "vitest run",
+    "test:db": "vitest run tests/db"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.7",
+    "jose": "^5.9.6",
+    "leaflet": "^1.9.4",
+    "mongodb": "^6.13.0",
+    "next": "^15.2.0",
+    "pg": "^8.13.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-leaflet": "^5.0.0",
+    "recharts": "^2.15.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/leaflet": "^1.9.16",
+    "@types/node": "^22.13.4",
+    "@types/pg": "^8.11.11",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.2",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
+  }
+}
+
