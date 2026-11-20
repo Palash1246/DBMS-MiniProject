@@ -1,0 +1,2 @@
+import{withDb}from'@/lib/pg';import{apiSession}from'@/lib/api';
+export const dynamic='force-dynamic';export async function GET(){const{session,response}=await apiSession('staff');if(response||!session)return response;const lots=await withDb(session,async c=>(await c.query('SELECT l.lot_id,l.name,a.name AS locality_name FROM lot_staff ls JOIN parking_lots l USING(lot_id) JOIN areas a USING(area_id) WHERE ls.user_id=$1',[session.id])).rows);return Response.json({lots});}

@@ -28,7 +28,7 @@ describe('Database Constraints & Exclusion Verification', () => {
     await client.query("DELETE FROM bookings WHERE user_id IN (SELECT user_id FROM users WHERE email LIKE '%@testconstraints.test')");
     await client.query("DELETE FROM slots WHERE slot_label LIKE 'TEST_%'");
     await client.query("DELETE FROM parking_lots WHERE name LIKE 'Test Lot Constraints%'");
-    await client.query("DELETE FROM vehicles WHERE reg_number LIKE 'KA01AB%'");
+    await client.query("DELETE FROM vehicles WHERE reg_number LIKE 'KA99ZX%'");
     await client.query("DELETE FROM users WHERE email LIKE '%@testconstraints.test'");
     await client.query("DELETE FROM areas WHERE name = 'Test Locality Constraints'");
     await client.query("SET session_replication_role = 'origin'");
@@ -64,10 +64,10 @@ describe('Database Constraints & Exclusion Verification', () => {
     `);
     testUserId = custRes.rows[0].user_id;
 
-    // Create Vehicle with valid Karnataka format (e.g. KA01AB1234)
+    // Use a test-only registration prefix so cleanup cannot touch demo seed vehicles.
     const vehRes = await client.query(`
       INSERT INTO vehicles (user_id, reg_number, vehicle_type)
-      VALUES ($1, 'KA01AB1234', 'car')
+      VALUES ($1, 'KA99ZX1234', 'car')
       RETURNING vehicle_id
     `, [testUserId]);
     testVehicleId = vehRes.rows[0].vehicle_id;
@@ -120,7 +120,7 @@ describe('Database Constraints & Exclusion Verification', () => {
     try {
       await client.query(`
         INSERT INTO vehicles (user_id, reg_number, vehicle_type)
-        VALUES ($1, 'KA01AB1234', 'car')
+        VALUES ($1, 'KA99ZX1234', 'car')
       `, [testUserId]);
       expect.fail('Should have failed unique constraint');
     } catch (e: any) {

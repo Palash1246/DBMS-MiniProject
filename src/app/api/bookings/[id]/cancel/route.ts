@@ -1,0 +1,3 @@
+import { withDb } from '@/lib/pg'; import { apiSession } from '@/lib/api'; import { errorResponse, originAllowed } from '@/lib/errors';
+export const dynamic = 'force-dynamic';
+export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) { const { session, response } = await apiSession('customer'); if (response || !session) return response; if (!originAllowed(request)) return Response.json({ error: 'BAD_ORIGIN' }, { status: 403 }); try { const { id } = await params; const result = await withDb(session, async c => (await c.query('SELECT sp_cancel_booking($1) AS result', [Number(id)])).rows[0].result); return Response.json({ result }); } catch (e) { return errorResponse(e); } }

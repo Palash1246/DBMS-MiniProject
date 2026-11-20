@@ -1,0 +1,3 @@
+import { withDb } from '@/lib/pg'; import { apiSession } from '@/lib/api';
+export const dynamic = 'force-dynamic';
+export async function GET(request: Request) { const { session, response } = await apiSession(); if (response || !session) return response; const root = new URL(request.url).searchParams.get('root'); const rows = await withDb(session, async c => (await c.query(`WITH RECURSIVE tree AS (SELECT area_id,name,level,parent_area_id FROM areas WHERE ($1::int IS NULL AND parent_area_id IS NULL) OR area_id=$1 UNION ALL SELECT a.area_id,a.name,a.level,a.parent_area_id FROM areas a JOIN tree t ON a.parent_area_id=t.area_id) SELECT * FROM tree ORDER BY level,name`, [root ? Number(root) : null])).rows); return Response.json({ areas: rows }); }

@@ -1,0 +1,1 @@
+import{withDb}from'@/lib/pg';import{apiSession}from'@/lib/api';export const dynamic='force-dynamic';export async function GET(){const{session,response}=await apiSession('owner');if(response||!session)return response;const rows=await withDb(session,async c=>(await c.query('SELECT * FROM v_peak_hours ORDER BY lot_id,hour_of_day')).rows);return Response.json({rows});}

@@ -1,0 +1,3 @@
+import { apiSession } from '@/lib/api'; import { getMongoDb } from '@/lib/mongo';
+export const dynamic = 'force-dynamic';
+export async function GET(request: Request) { const { response } = await apiSession('customer'); if (response) return response; const q = new URL(request.url).searchParams.get('q')?.trim(); if (!q || q.length > 100) return Response.json({ results: [] }); const rows = await (await getMongoDb()).collection('lot_profiles').find({ $text: { $search: q } }, { projection: { score: { $meta: 'textScore' } } }).sort({ score: { $meta: 'textScore' } }).limit(30).toArray(); return Response.json({ results: rows }); }

@@ -1,0 +1,3 @@
+import {withDb}from'@/lib/pg';import{apiSession}from'@/lib/api';import{errorResponse,originAllowed}from'@/lib/errors';
+export const dynamic='force-dynamic';
+export async function POST(request:Request,{params}:{params:Promise<{id:string}>}){const{session,response}=await apiSession('owner');if(response||!session)return response;if(!originAllowed(request))return Response.json({error:'BAD_ORIGIN'},{status:403});try{const id=Number((await params).id);const result=await withDb(session,async c=>(await c.query('CALL sp_close_lot($1,0)',[id])).rows[0]);return Response.json({cancelled:result?.p_cancelled??0});}catch(e){return errorResponse(e);}}

@@ -1,0 +1,1 @@
+import{withDb}from'@/lib/pg';import{apiSession}from'@/lib/api';export const dynamic='force-dynamic';export async function GET(){const{session,response}=await apiSession('owner');if(response||!session)return response;const rows=await withDb(session,async c=>(await c.query('SELECT * FROM v_lot_occupancy ORDER BY lot_name')).rows);return Response.json({rows});}

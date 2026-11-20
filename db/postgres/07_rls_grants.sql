@@ -12,7 +12,7 @@ GRANT USAGE ON SCHEMA public TO ps_customer, ps_lot_owner, ps_staff, ps_admin, p
 
 -- 3. Sequence Permissions (for tables with direct INSERT)
 GRANT USAGE, SELECT ON SEQUENCE users_user_id_seq TO ps_customer, ps_lot_owner, ps_admin, ps_app;
-GRANT USAGE, SELECT ON SEQUENCE vehicles_vehicle_id_seq TO ps_customer, ps_admin;
+GRANT USAGE, SELECT ON SEQUENCE vehicles_vehicle_id_seq TO , ps_admin;
 GRANT USAGE, SELECT ON SEQUENCE parking_lots_lot_id_seq TO ps_lot_owner, ps_admin;
 GRANT USAGE, SELECT ON SEQUENCE slots_slot_id_seq TO ps_lot_owner, ps_admin;
 GRANT USAGE, SELECT ON SEQUENCE reviews_review_id_seq TO ps_customer, ps_admin;

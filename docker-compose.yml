@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: parksmart-postgres
+    container_name: parksmart-postgres-fresh
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
@@ -10,7 +10,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - parksmart_postgres_data_fresh:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-parksmart}"]
       interval: 5s
@@ -19,17 +19,19 @@ services:
 
   mongo:
     image: mongo:7
-    container_name: parksmart-mongo
+    container_name: parksmart-mongo-fresh
     restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:-root}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-change_me_mongo_root}
     ports:
-      - "27018:27017"
+      - "27017:27017"
     volumes:
-      - mongo_data:/data/db
+      - parksmart_mongo_data_fresh:/data/db
 
 volumes:
   postgres_data:
+  parksmart_postgres_data_fresh:
   mongo_data:
+  parksmart_mongo_data_fresh:
 

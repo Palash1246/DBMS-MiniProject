@@ -168,7 +168,7 @@ describe('Database RBAC & Row-Level Security Matrix (Phase P3)', () => {
     await appClient.query("SET LOCAL ROLE ps_lot_owner");
     await appClient.query(`SELECT set_config('app.user_id', $1, true), set_config('app.role', 'owner', true)`, [String(owner1Id)]);
 
-    const o1Res = await appClient.query("SELECT booking_id FROM bookings");
+    const o1Res = await appClient.query("SELECT booking_id FROM bookings WHERE booking_id = $1", [booking1Id]);
     expect(o1Res.rows.map(r => r.booking_id)).toContain(booking1Id);
     await appClient.query('COMMIT');
 
@@ -177,7 +177,7 @@ describe('Database RBAC & Row-Level Security Matrix (Phase P3)', () => {
     await appClient.query("SET LOCAL ROLE ps_lot_owner");
     await appClient.query(`SELECT set_config('app.user_id', $1, true), set_config('app.role', 'owner', true)`, [String(owner2Id)]);
 
-    const o2Res = await appClient.query("SELECT booking_id FROM bookings");
+    const o2Res = await appClient.query("SELECT booking_id FROM bookings WHERE booking_id = $1", [booking1Id]);
     expect(o2Res.rows.map(r => r.booking_id)).not.toContain(booking1Id);
     await appClient.query('COMMIT');
   });
